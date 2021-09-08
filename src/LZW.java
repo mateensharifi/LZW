@@ -5,16 +5,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LZW {
-	//private BufferedReader reader;
+	// private BufferedReader reader;
 	private HashMap<Integer, String> dictionary;
 	private String curr;
 	private String next;
+
 	public LZW(String inputFileName) throws FileNotFoundException {
-		//reader = new BufferedReader(new FileReader(inputFileName));
+		// reader = new BufferedReader(new FileReader(inputFileName));
 		dictionary = new HashMap<Integer, String>();
 	}
-	
-	public String encode (String input) {
+
+	public String encode(String input) {
 		int start = 0;
 		int end = 1;
 		curr = input.substring(start, end);
@@ -23,24 +24,20 @@ public class LZW {
 			next = input.substring(start + 1, end + 1);
 			if (dictionary.containsValue(curr + next)) {
 				curr = curr + next;
-			}
-			else {
+			} else {
 				dictionary.put(dictionary.size() - 1, curr + next);
 				return next;
 			}
-			//dictionary.put(dictionary.size() - 1, first + next);
-			//first = next;
+			// dictionary.put(dictionary.size() - 1, first + next);
+			// first = next;
 			counter++;
 		}
 		return curr;
 	}
-	
-	public static String toBinary(int x, int len)
-	{
-		if (len > 0)
-		{
-			return String.format("%" + len + "s",
-							Integer.toBinaryString(x)).replaceAll(" ", "0");
+
+	public static String toBinary(int x, int len) {
+		if (len > 0) {
+			return String.format("%" + len + "s", Integer.toBinaryString(x)).replaceAll(" ", "0");
 		}
 
 		return null;
