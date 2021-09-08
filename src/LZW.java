@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class LZW {
 	//private BufferedReader reader;
 	private HashMap<Integer, String> dictionary;
-	private String first;
+	private String curr;
 	private String next;
 	public LZW(String inputFileName) throws FileNotFoundException {
 		//reader = new BufferedReader(new FileReader(inputFileName));
@@ -16,20 +16,21 @@ public class LZW {
 	public String encode (String input) {
 		int start = 0;
 		int end = 1;
-		first = input.substring(start, end);
+		curr = input.substring(start, end);
 		int counter = 0;
 		while (counter != dictionary.size() - 1) {
 			next = input.substring(start + 1, end + 1);
-			if (dictionary.containsValue(first + next)) {
-				first = first + next;
+			if (dictionary.containsValue(curr + next)) {
+				curr = curr + next;
 			}
 			else {
+				dictionary.put(dictionary.size() - 1, curr + next);
 				return next;
 			}
-			dictionary.put(dictionary.size() - 1, first + next);
-			first = next;
+			//dictionary.put(dictionary.size() - 1, first + next);
+			//first = next;
 			counter++;
 		}
-		return first;
+		return curr;
 	}
 }
