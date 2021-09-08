@@ -13,6 +13,7 @@ public class LZW {
 		//reader = new BufferedReader(new FileReader(inputFileName));
 		dictionary = new HashMap<Integer, String>();
 	}
+	
 	public String encode (String input) {
 		int start = 0;
 		int end = 1;
@@ -32,5 +33,20 @@ public class LZW {
 			counter++;
 		}
 		return curr;
+	}
+	
+	public static String toBinary(int x, int len)
+	{
+		if (len > 0)
+		{
+			return String.format("%" + len + "s",
+							Integer.toBinaryString(x)).replaceAll(" ", "0");
+		}
+
+		return null;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(toBinary(1000, 16));
 	}
 }
