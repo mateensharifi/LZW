@@ -1,38 +1,37 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.lang.*;
 
 public class LZW {
-	// private BufferedReader reader;
 	private HashMap<Integer, String> dictionary;
+	private ArrayList<Integer> encoded;
 	private String curr;
 	private String next;
 
-	public LZW(String inputFileName) throws FileNotFoundException {
-		// reader = new BufferedReader(new FileReader(inputFileName));
+	public LZW() {
 		dictionary = new HashMap<Integer, String>();
+//		curr = ' ';
+//		next = ' ';
+		encoded = new ArrayList<Integer>();
 	}
 
-	public String encode(String input) {
-		int start = 0;
-		int end = 1;
-		curr = input.substring(start, end);
-		int counter = 0;
-		while (counter != dictionary.size() - 1) {
-			next = input.substring(start + 1, end + 1);
+	public ArrayList<Integer> createDictionary(String input) {
+		int size = 300;
+		for (int i = 0; i < size; i++) {
+			dictionary.put(i, (char) i + "");
+		}
+		curr = dictionary.get(0);
+		for (int i = 0; i < dictionary.size(); i++) {
+			next = dictionary.get(i + 1);
 			if (dictionary.containsValue(curr + next)) {
 				curr = curr + next;
 			} else {
-				dictionary.put(dictionary.size() - 1, curr + next);
-				return next;
+				return convertToBinary(next);
 			}
-			// dictionary.put(dictionary.size() - 1, first + next);
-			// first = next;
-			counter++;
+			dictionary.put(dictionary.size(), curr + next);
+			curr = next;
 		}
-		return curr;
+		return toBinary(curr);
 	}
 
 	public static String toBinary(int x, int len) {
@@ -41,9 +40,5 @@ public class LZW {
 		}
 
 		return null;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(toBinary(1000, 16));
 	}
 }
