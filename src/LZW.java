@@ -1,53 +1,43 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.lang.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class LZW {
-	private HashMap<Integer, String> dictionary;
-	private ArrayList<Integer> encoded;
-	private String curr;
-	private String next;
-	private int size;
+	private static String file = null;
+	private static double maxSize;
+	private static String fileName;
 
-	public LZW() {
-		dictionary = new HashMap<Integer, String>();
-//		curr = ' ';
-//		next = ' ';
-		encoded = new ArrayList<Integer>();
-		size = 0;
-	}
-
-	public String encode(String input) {
-		size = 256;
+	public static void encode(String input, int length) throws IOException {
+		maxSize = Math.pow(2, length);
+		int size = 255;
+		HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
 		for (int i = 0; i < size; i++) {
-			dictionary.put(i, "" + (char)i);
+			dictionary.put("" + (char) i, i);
 		}
-		curr = dictionary.get(0);
-		for (int i = 0; i < dictionary.size(); i++) {
-			next = dictionary.get(i + 1);
-			if (dictionary.containsValue(curr + next)) {
-				curr = curr + next;
+		String curr = "";
+		ArrayList<Integer> encoded = new ArrayList<Integer>();
+		for (char next : input.toCharArray()) {
+			String comb = curr + next;
+			if (dictionary.containsKey(comb)) {
+				curr = comb;
 			} else {
-				int place = 0;
-				for(Entry<Integer, String> entry: dictionary.entrySet()) {
-					 if(((Entry<Integer, String>) dictionary).getValue() == next) {
-						 place = ((Entry<Integer, String>) dictionary).getKey();
-					 }
+				encoded.add(dictionary.get(curr));
+				if (size < maxSize) {
+					dictionary.put(comb, size++);
 				}
-				return Integer.toBinaryString(place);
+				curr = "" + next;
 			}
-			dictionary.put(size++, curr + next);
-			curr = next;
 		}
-		int place = 0;
-		for(Entry<Integer, String> entry: dictionary.entrySet()) {
-			 if(((Entry<Integer, String>) dictionary).getValue() == curr) {
-				 place = ((Entry<Integer, String>) dictionary).getKey();
-			 }
+		if (!curr.equals("")) {
+			encoded.add(dictionary.get(curr));
 		}
-		return Integer.toBinaryString(place);
+		buildFile(encoded);
 	}
 
-
-}
