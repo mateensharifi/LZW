@@ -40,4 +40,25 @@ public class LZW {
 		}
 		buildFile(encoded);
 	}
+	private static void buildFile(ArrayList<Integer> encoded) throws IOException {
+		BufferedWriter output = null;
+		fileName = file.substring(0, file.indexOf(".")) + ".lzw";
+		try {
+			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF_16BE"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			Iterator<Integer> itr = encoded.iterator();
+			while (itr.hasNext()) {
+				output.write(itr.next());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		output.flush();
+		output.close();
 
+	}
+
+	
