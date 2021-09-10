@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.lang.*;
 
 public class LZW {
@@ -7,18 +8,20 @@ public class LZW {
 	private ArrayList<Integer> encoded;
 	private String curr;
 	private String next;
+	private int size;
 
 	public LZW() {
 		dictionary = new HashMap<Integer, String>();
 //		curr = ' ';
 //		next = ' ';
 		encoded = new ArrayList<Integer>();
+		size = 0;
 	}
 
-	public ArrayList<Integer> createDictionary(String input) {
-		int size = 300;
+	public String encode(String input) {
+		size = 5;
 		for (int i = 0; i < size; i++) {
-			dictionary.put(i, (char) i + "");
+			dictionary.put(i, input.substring(i, i + 1));
 		}
 		curr = dictionary.get(0);
 		for (int i = 0; i < dictionary.size(); i++) {
@@ -26,19 +29,27 @@ public class LZW {
 			if (dictionary.containsValue(curr + next)) {
 				curr = curr + next;
 			} else {
-				return convertToBinary(next);
+				Object key = null;
+				Object value = null;
+				for (Entry<Integer, String> e : dictionary.entrySet()) {
+					key = e.getKey();
+					value = e.getValue();
+				}
+//				return toBinary((int) key);
+				return Integer.toBinaryString((int) key);
 			}
-			dictionary.put(dictionary.size(), curr + next);
+			dictionary.put(size++, curr + next);
 			curr = next;
 		}
-		return toBinary(curr);
-	}
-
-	public static String toBinary(int x, int len) {
-		if (len > 0) {
-			return String.format("%" + len + "s", Integer.toBinaryString(x)).replaceAll(" ", "0");
+		Object key = null;
+		Object value = null;
+		for (Entry<Integer, String> e : dictionary.entrySet()) {
+			key = e.getKey();
+			value = e.getValue();
 		}
-
-		return null;
+		//return toBinary((int) key);
+		return Integer.toBinaryString((int) key);
 	}
+
+
 }
