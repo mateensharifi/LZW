@@ -14,7 +14,7 @@ public class LZW {
 	private static double maxSize;
 	private static String fileName;
 
-	public static void encode(String input, int length) throws IOException {
+	public static String encode(String input, int length) throws IOException {
 		maxSize = Math.pow(2, length);
 		int size = 255;
 		HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
@@ -38,6 +38,6 @@ public class LZW {
 		if (!curr.equals("")) {
 			encoded.add(dictionary.get(curr));
 		}
-		Integer.toBinaryString(dictionary.get(curr));
+		return Integer.toBinaryString(dictionary.get(curr));
 	}
 }
