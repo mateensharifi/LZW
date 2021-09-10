@@ -19,9 +19,9 @@ public class LZW {
 	}
 
 	public String encode(String input) {
-		size = 5;
+		size = 256;
 		for (int i = 0; i < size; i++) {
-			dictionary.put(i, input.substring(i, i + 1));
+			dictionary.put(i, "" + (char)i);
 		}
 		curr = dictionary.get(0);
 		for (int i = 0; i < dictionary.size(); i++) {
@@ -29,26 +29,24 @@ public class LZW {
 			if (dictionary.containsValue(curr + next)) {
 				curr = curr + next;
 			} else {
-				Object key = null;
-				Object value = null;
-				for (Entry<Integer, String> e : dictionary.entrySet()) {
-					key = e.getKey();
-					value = e.getValue();
+				int place = 0;
+				for(Entry<Integer, String> entry: dictionary.entrySet()) {
+					 if(((Entry<Integer, String>) dictionary).getValue() == next) {
+						 place = ((Entry<Integer, String>) dictionary).getKey();
+					 }
 				}
-//				return toBinary((int) key);
-				return Integer.toBinaryString((int) key);
+				return Integer.toBinaryString(place);
 			}
 			dictionary.put(size++, curr + next);
 			curr = next;
 		}
-		Object key = null;
-		Object value = null;
-		for (Entry<Integer, String> e : dictionary.entrySet()) {
-			key = e.getKey();
-			value = e.getValue();
+		int place = 0;
+		for(Entry<Integer, String> entry: dictionary.entrySet()) {
+			 if(((Entry<Integer, String>) dictionary).getValue() == curr) {
+				 place = ((Entry<Integer, String>) dictionary).getKey();
+			 }
 		}
-		//return toBinary((int) key);
-		return Integer.toBinaryString((int) key);
+		return Integer.toBinaryString(place);
 	}
 
 

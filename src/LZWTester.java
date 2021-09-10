@@ -2,6 +2,6 @@
 public class LZWTester {
 	public static void main (String [] args) {
 		LZW test = new LZW();
-		test.encode("abcabcabcabcabcabcabcabcabcabcabcabc");
+		System.out.println(test.encode("abcabcabcabcabcabcabcabcabcabcabcabc"));
 	}
 }
