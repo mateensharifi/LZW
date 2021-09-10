@@ -61,4 +61,21 @@ public class LZW {
 
 	}
 
-	
+	public static void main(String[] args) throws IOException {
+
+		file = args[0];
+		int Bit_Length = Integer.parseInt(args[1]);
+
+		StringBuffer input_string1 = new StringBuffer();
+
+		try (BufferedReader br = Files.newBufferedReader(Paths.get(file), StandardCharsets.UTF_8)) {
+			for (String line = null; (line = br.readLine()) != null;) {
+
+				input_string1 = input_string1.append(line);
+			}
+		}
+
+		encode(input_string1.toString(), Bit_Length);
+
+	}
+}
