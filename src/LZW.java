@@ -14,6 +14,7 @@ public class LZW {
 	private static double maxSize;
 	private static String fileName;
 	private static HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
+	private static HashMap<Integer, String> decodeDictionary = new HashMap<Integer, String>();
 	private static ArrayList<Integer> encoded = new ArrayList<Integer>();
 
 	public static String encode(String input, int length) throws IOException {
@@ -36,26 +37,45 @@ public class LZW {
 				curr = "" + next;
 			}
 		}
-		System.out.println("econded: " + encoded);
+		System.out.println("encoded: " + encoded);
 		if (!curr.equals("")) {
 			encoded.add(dictionary.get(curr));
 		}
 		return Integer.toBinaryString(dictionary.get(curr));
 	}
 	
-	public static String decode() {
-		HashMap<Integer, String> dictionary2 = new HashMap<Integer, String>();
-		updateDictionary2();
+	public static String decode(int length) {
+		maxSize = Math.pow(2, length);
+		createDecodeDictionary();
+		int size = 256;
 		String ans = "";
-		char current = 0, next = 0;
+		String current = "", next = "", lastEntry = "";
+		
 		for(int i = 0; i < encoded.size() - 1; i++) {
-			//current = dictionary.get(encoded.get(i));
+			current = decodeDictionary.get(encoded.get(i));
+			next = decodeDictionary.get(encoded.get(i + 1));
+			if(!decodeDictionary.containsKey(encoded.get(i + 1))) { //special case
+				if(size < maxSize) {
+					decodeDictionary.put(size++, lastEntry + lastEntry.charAt(0));
+				}
+			}
+			if (size < maxSize) {
+				decodeDictionary.put(size++, current + next.charAt(0));
+			}
+			lastEntry = current + next.charAt(0);
 			
 		}
-		return "";
+		
+		for(int n: encoded) {
+			ans += decodeDictionary.get(n);
+		}
+		return ans;
 	}
-	
-	public static void updateDictionary2() {
-		//for()
+		
+	public static void createDecodeDictionary() {
+		for (int i = 0; i < 256; i++) {
+			decodeDictionary.put(i, "" + (char) i);
+		}
+		//System.out.println(decodeDictionary.toString());
 	}
 }
