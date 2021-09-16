@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class LZW {
@@ -44,7 +46,7 @@ public class LZW {
 		return Integer.toBinaryString(dictionary.get(curr));
 	}
 	
-	public static String decode(int length) {
+	public static String decode(int length) throws IOException {
 		maxSize = Math.pow(2, length);
 		createDecodeDictionary();
 		int size = 256;
@@ -69,6 +71,9 @@ public class LZW {
 		for(int n: encoded) {
 			ans += decodeDictionary.get(n);
 		}
+		PrintWriter out = new PrintWriter(new File("answer.txt"));
+		out.print(ans);
+		out.close();
 		return ans;
 	}
 		
