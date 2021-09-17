@@ -1,0 +1,1 @@
+I started my code by creating the dictionary and then made an ArrayList that holds the encoded values while also building up the dictionary. I think this part works, but I think there may be a problem in outputting the binary (line 40).
