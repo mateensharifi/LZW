@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +34,7 @@ public class LZW {
 				curr = comb;
 			} else {
 				encoded.add(dictionary.get(curr));
-				if (size < maxSize) {
+				if(size < maxSize) {
 					dictionary.put(comb, size++);
 				}
 				curr = "" + next;
@@ -44,6 +45,7 @@ public class LZW {
 			encoded.add(dictionary.get(curr));
 		}
 		return Integer.toBinaryString(dictionary.get(curr));
+
 	}
 	
 	public static String decode(int length) throws IOException {
